@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Análisis de ventas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<main>
+  <h1>Análisis de ventas</h1>
+  <p class="sub">Importá el CSV de un día o de todo un mes. Se procesa en tu navegador; no se envía a ningún servidor.</p>
+
+  <div class="card" id="drop"><b>Hacé clic para elegir el archivo</b> o arrastralo acá (.csv separado por «;»)
+    <input type="file" id="file" accept=".csv,.txt" class="hide">
+  </div>
+  <p id="err" class="error"></p>
+
+  <div id="app" class="hide">
+    <div class="top">
+      <span id="fname" class="sub"></span>
+      <label>Desde <input type="date" id="from"></label>
+      <label>Hasta <input type="date" id="to"></label>
+      <label>Semanas
+        <select id="wmode">
+          <option value="b7">Bloques de 7 días (1–7, 8–14…)</option>
+          <option value="cal">Calendario (lunes a domingo)</option>
+        </select>
+      </label>
+      <button id="reset">Cargar otro archivo</button>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <!-- Solo se muestra cuando el rango tiene más de un día -->
+    <section id="month" class="hide">
+      <div class="grid">
+        <div class="card"><h2>Ventas por día</h2><div class="ch"><canvas id="cDay"></canvas></div></div>
+        <div class="card"><h2>Ventas por semana</h2><div class="ch"><canvas id="cWeek"></canvas></div></div>
+      </div>
+      <div class="grid">
+        <div class="card"><h2>Detalle por semana</h2>
+          <div class="wrap"><table id="wtable"></table></div>
+          <p class="sub" id="wnote"></p></div>
+        <div class="card"><h2>Promedio de venta por día de la semana</h2><div class="ch"><canvas id="cDow"></canvas></div></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd"><h2>Ventas por hora</h2>
+          <div class="top" id="hm"><button data-m="rev" class="on">$ Ventas</button><button data-m="units">Unidades</button><button data-m="tix">Tickets</button></div></div>
+        <div class="ch"><canvas id="cHour"></canvas></div></div>
+      <div class="card">
+        <div class="hd"><h2>Top 5 productos</h2>
+          <div class="top" id="tm"><button data-m="units" class="on">Unidades</button><button data-m="rev">$ Ventas</button><button data-m="margin">Margen</button></div></div>
+        <div class="ch"><canvas id="cTop"></canvas></div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><h2>Distribución del monto por ticket</h2><div class="ch"><canvas id="cTicket"></canvas></div></div>
+      <div class="card"><h2>Hallazgos</h2><ul id="ins"></ul>
+        <h2 class="mt">Concentración (Pareto)</h2><div id="par"></div></div>
+    </div>
+
+    <div class="card">
+      <div class="hd"><h2>Detalle por producto</h2><input type="search" id="q" placeholder="Buscar producto…"></div>
+      <div class="wrap"><table>
+        <thead><tr>
+          <th data-k="rank">#</th><th data-k="name">Producto</th><th data-k="units">Unidades</th><th data-k="tix">Tickets</th>
+          <th data-k="days">Días</th><th data-k="rev">Ventas $</th><th data-k="margin">Margen $</th><th data-k="mp">Margen %</th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table></div>
+      <p class="sub" id="more"></p>
+    </div>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
