@@ -1,0 +1,8 @@
+# Datos reales de ventas (no subir al repositorio)
+*.csv
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
